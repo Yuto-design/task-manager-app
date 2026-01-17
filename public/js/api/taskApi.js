@@ -22,6 +22,8 @@ export class TaskApi {
     }
 
     static async create(data) {
+        console.log("[API] create", data);
+
         const res = await fetch(BASE_URL, {
             method: 'POST',
             headers: {

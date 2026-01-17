@@ -2,13 +2,16 @@ import { TaskApi } from "../api/taskApi.js";
 import { renderTasks } from "../ui/taskView.js";
 
 export function initTaskEvents() {
-    document.getElementById("add-btn").addEventListener("click", async () => {
-        const title = document.getElementById("title").value;
-        const description = document.getElementById("description").value;
+    const addBtn = document.getElementById("add-btn");
+    const taskList = document.getElementById("task-list");
+
+    addBtn.addEventListener("click", async () => {
+        const title = document.getElementById("title").value.trim();
+        const description = document.getElementById("description").value.trim();
         const status = document.getElementById("status").value;
 
         if (!title) {
-            alert("タイトルは必須です");
+            alert("タスク名は必須です");
             return;
         }
 
@@ -17,36 +20,39 @@ export function initTaskEvents() {
         const tasks = await TaskApi.getAll();
         renderTasks(tasks);
 
-        document.getElementById("title").value = "";
-        document.getElementById("description").value = "";
-        document.getElementById("status").value = "todo";
+        console.log("タスクを追加しました");
+        alert("追加しました");
     });
 
-    document.getElementById("task-list").addEventListener("click", async (e) => {
-        const li = e.target.closest("li");
-        if (!li) return;
+    taskList.addEventListener("click", async (e) => {
+        const row = e.target.closest("[data-id]");
+        if (!row) return;
 
-        const id = li.dataset.id;
+        const id = row.dataset.id;
 
         if (e.target.classList.contains("save-btn")) {
-            const title = li.querySelector(".edit-title").value;
-            const description = li.querySelector(".edit-desc").value;
-            const status = li.querySelector(".status-select").value;
+            const title = row.querySelector(".title-input").value.trim();
+            const description = row.querySelector(".description-input").value.trim();
+            const status = row.querySelector(".status-select").value;
 
-            await TaskApi.update(id, { title, description, status });
+            await TaskApi.update(id, {
+                title,
+                description,
+                status
+            });
+
+            console.log(`タスク ${id} を保存しました`);
             alert("保存しました");
         }
 
         if (e.target.classList.contains("delete-btn")) {
+            if (!confirm("削除しますか？")) return;
+
             await TaskApi.delete(id);
-            li.remove();
+            row.remove();
+
+            console.log(`タスク ${id} を削除しました`);
+            alert("削除しました");
         }
-    });
-
-    document.getElementById("task-list").addEventListener("change", (e) => {
-        if (!e.target.classList.contains("status-select")) return;
-
-        e.target.classList.remove("status-todo", "status-doing", "status-done");
-        e.target.classList.add(`status-${e.target.value}`);
     });
 }

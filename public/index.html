@@ -8,6 +8,8 @@
 <body>
     <h1>タスク管理</h1>
 
+    <div id="message" class="message"></div>
+
     <input id="title" placeholder="タスク名">
     <input id="description" placeholder="詳細">
 
@@ -19,7 +21,18 @@
 
     <button id="add-btn">追加</button>
 
-    <ul id="task-list"></ul>
+    <table id="task-table">
+        <thead>
+            <tr data-id="1">
+                <td class="title">Task</td>
+                <td class="description">詳細</td>
+                <td>状態</td>
+                <td>操作</td>
+            </tr>
+        </thead>
+        <tbody id="task-list"></tbody>
+    </table>
+
 
     <script type="module" src="./js/main.js"></script>
 </body>
