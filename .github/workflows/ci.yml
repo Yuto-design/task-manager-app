@@ -74,8 +74,9 @@ jobs:
             sleep 5
           done
 
-      - name: Clear config cache
+      - name: Clear Laravel config
         run: |
+          rm -f bootstrap/cache/config.php
           php artisan config:clear
 
       - name: Run migrations
