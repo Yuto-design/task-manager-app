@@ -55,6 +55,12 @@ jobs:
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=laravel/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
 
+      - name: Configure CI env (disable database cache)
+        run: |
+          echo "CACHE_STORE=array" >> .env
+          echo "SESSION_DRIVER=array" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+
       - name: Wait for MySQL
         run: |
           sudo apt-get update
