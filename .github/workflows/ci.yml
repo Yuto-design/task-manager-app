@@ -68,6 +68,11 @@ jobs:
             sleep 5
           done
 
+      - name: Clear config cache
+        run: |
+          php artisan config:clear
+          php artisan cache:clear
+
       - name: Run migrations
         run: php artisan migrate --force
 
