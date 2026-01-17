@@ -14,3 +14,23 @@ li {
 .delete-btn {
     margin-left: 10px;
 }
+
+.status-select {
+    margin: 0 8px;
+}
+
+.status-todo {
+    color: #ff4545;
+    font-weight: bold;
+}
+
+.status-doing {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+.status-done {
+    color: #27ae60;
+    text-decoration: line-through;
+    font-weight: bold;
+}
