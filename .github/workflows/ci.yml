@@ -14,16 +14,21 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_POST_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: task_manager
           MYSQL_USER: laravel
           MYSQL_PASSWORD: secret
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -44,7 +49,7 @@ jobs:
       - name: Configure database
         run: |
           sed -i 's/DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
-          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+          sed -i 's/DB_HOST=.*/DB_HOST=mysql/' .env
           sed -i 's/DB_PORT=.*/DB_PORT=3306/' .env
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=task_manager/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=laravel/' .env
@@ -52,9 +57,14 @@ jobs:
 
       - name: Wait for MySQL
         run: |
+          sudo apt-get update
           sudo apt-get install -y mysql-client
-          until mysql -h 127.0.0.1 -u laravel -psecret -e "SHOW DATABASES"; do
-            echo "Waiting for database..."
+          for i in {1..30}; do
+            if mysql -h mysql -u laravel -psecret -e "SELECT 1"; then
+              echo "MySQL is ready"
+              break
+            fi
+            echo "Waiting for MySQL..."
             sleep 5
           done
 
