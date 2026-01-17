@@ -20,11 +20,6 @@ jobs:
           MYSQL_PASSWORD: secret
         ports:
           - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
 
     steps:
       - name: Checkout code
@@ -54,6 +49,14 @@ jobs:
           sed -i 's/DB_DATABASE=.*/DB_DATABASE=task_manager/' .env
           sed -i 's/DB_USERNAME=.*/DB_USERNAME=laravel/' .env
           sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=secret/' .env
+
+      - name: Wait for MySQL
+        run: |
+          sudo apt-get install -y mysql-client
+          until mysql -h 127.0.0.1 -u laravel -psecret -e "SHOW DATABASES"; do
+            echo "Waiting for database..."
+            sleep 5
+          done
 
       - name: Run migrations
         run: php artisan migrate --force
