@@ -4,5 +4,13 @@ body {
 }
 
 li {
-    margin: 5px 0;
+    margin-bottom: 8px;
+}
+
+.task-title {
+    margin-right: 10px;
+}
+
+.delete-btn {
+    margin-left: 10px;
 }
