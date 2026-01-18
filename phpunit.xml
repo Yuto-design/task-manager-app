@@ -28,7 +28,7 @@
         <env name="DB_PASSWORD" value="secret"/>
 
         <env name="CACHE_STORE" value="array"/>
-        <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
     </php>
 </phpunit>
