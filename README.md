@@ -36,6 +36,14 @@ Docker による開発環境の標準化と、GitHub Actions を用いた CI（�
 
 ---
 
+## 動作環境について
+
+> [!NOTE]
+> 本プロジェクトは **macOS / Linux** 環境を前提としている。  
+> Windows 環境では **WSL2 の使用を推奨**する。
+
+---
+
 ## 機能一覧
 
 * タスクの追加
@@ -63,10 +71,18 @@ Docker による開発環境の標準化と、GitHub Actions を用いた CI（�
 ├── database/
 │   ├── migrations/     # マイグレーション
 │   └── seeders/
-├── public/
-│   ├── index.html      # フロントエンド
+├── public/             # フロントエンド
+│   ├── index.html
 │   ├── css/
+│   │   └── style.css
 │   └── js/
+│       ├── api/
+│       │   └── taskApi.js
+│       ├── ui/
+│       │   └── taskView.js
+│       ├── events/
+│       │   └── taskEvents.js
+│       └── main.js
 ├── routes/
 │   ├── web.php
 │   └── api.php
@@ -88,7 +104,21 @@ docker compose up -d
 docker compose exec app php artisan migrate
 ```
 
-### アクセス先
+### 環境変数（.env）について
+> [!WARNING]
+> .env の DB_CONNECTION が sqlite のままだと、
+> MySQL コンテナを起動しても データベースが使用されない。
+> 必ず mysql に変更すること。
+> ```bash
+> DB_CONNECTION=mysql
+> DB_HOST=db
+> DB_PORT=3306
+> DB_DATABASE=task_manager
+> DB_USERNAME=laravel
+> DB_PASSWORD=secret
+> ```
+
+### アクセス方法
 
 * Web アプリ: [http://localhost:8080](http://localhost:8080)
 * phpMyAdmin: [http://localhost:8081](http://localhost:8081)
@@ -98,6 +128,17 @@ docker compose exec app php artisan migrate
   * パスワード: root
 
 ---
+
+## データベース構成
+tasksテーブル
+|カラム名|型|説明|
+|----|----|----|
+|id|bigint|タスクID|
+|title|string|タスク名|
+|description|text|詳細|
+|status|string|todo / doing / done|
+|created_at|timestamp|作成日時|
+|updated_at|timestamp|更新日時|
 
 ## CI（GitHub Actions）について
 
@@ -130,7 +171,27 @@ Test 実行
 成功（✔） / 失敗（✖）
 ```
 
+> [!WARNING]
+> CI 環境で CACHE_STORE=database を使用すると、
+> cache テーブル未作成によりエラーが発生する。
+> ```bash
+> CACHE_STORE=array
+> SESSION_DRIVER=array
+> QUEUE_CONNECTION=sync
+> ```
+
+> [!TIP]
+> CI では DB キャッシュ・セッションを無効化し、
+> テストの安定性と再現性を優先している。
+
 ---
+
+## `welcome.blade.php`について
+> [!NOTE]
+> Laravel 標準の welcome.blade.php は、
+> ルート / にアクセスした際の表示確認用ファイルである。
+> 本プロジェクトでは API 中心構成のため、
+> 内容は最小限または未使用としている。
 
 ## 研究テーマとの関連
 
