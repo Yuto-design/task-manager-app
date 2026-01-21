@@ -5,6 +5,13 @@ services:
       - ./:/var/www
     depends_on:
       - db
+  node:
+    image: node:20
+    container_name: node
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    command: sh -c "sleep infinity"
 
   web:
     image: nginx:latest

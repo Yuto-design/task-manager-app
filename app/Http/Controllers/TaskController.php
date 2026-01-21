@@ -14,9 +14,7 @@ class TaskController extends Controller
 
     public function index()
     {
-        return response()->json(
-            Task::all()
-        );
+        return view('tasks.index');
     }
 
     public function store(Request $request)
