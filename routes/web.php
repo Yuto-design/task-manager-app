@@ -7,9 +7,6 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/tasks', [TaskController::class, 'index'])
-        ->name('tasks.index');
-});
+Route::get('/tasks', [TaskController::class, 'index']);
 
 require __DIR__.'/auth.php';

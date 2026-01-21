@@ -1,5 +1,5 @@
-import { TaskApi } from "../api/taskApi.js";
-import { renderTasks } from "../ui/taskView.js";
+import { TaskApi } from "/js/api/taskApi.js";
+import { renderTasks } from "/js/ui/taskView.js";
 
 export function initTaskEvents() {
     const addBtn = document.getElementById("add-btn");

@@ -1,6 +1,6 @@
-import { TaskApi } from "./api/taskApi.js";
-import { renderTasks } from "./ui/taskView.js";
-import { initTaskEvents } from "./events/taskEvents.js";
+import { TaskApi } from "/js/api/taskApi.js";
+import { renderTasks } from "/js/ui/taskView.js";
+import { initTaskEvents } from "/js/events/taskEvents.js";
 
 async function init() {
     const tasks = await TaskApi.getAll();
