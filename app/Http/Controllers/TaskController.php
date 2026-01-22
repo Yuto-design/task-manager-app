@@ -27,6 +27,13 @@ class TaskController extends Controller
         );
     }
 
+    public function apiIndex()
+    {
+        return response()->json(
+            Auth::user()->tasks()->orderBy('id', 'desc')->get()
+        );
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
