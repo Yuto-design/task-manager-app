@@ -1,6 +1,5 @@
-const BASE_URL = "/api/tasks";
+const BASE_URL = "/tasks";
 
-// Blade の <meta name="csrf-token"> から取得
 const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     ?.getAttribute("content");
@@ -8,17 +7,10 @@ const csrfToken = document
 export class TaskApi {
 
     static async getAll() {
-        const res = await fetch(BASE_URL, {
-            headers: {
-                "Accept": "application/json",
-            },
+        const res = await fetch("/tasks/list", {
+            headers: { "Accept": "application/json" },
             credentials: "same-origin",
         });
-
-        if (!res.ok) {
-            throw new Error("Failed to fetch tasks");
-        }
-
         return res.json();
     }
 
@@ -42,7 +34,9 @@ export class TaskApi {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
                 "Accept": "application/json",
             },
             credentials: "same-origin",
@@ -50,8 +44,7 @@ export class TaskApi {
         });
 
         if (!res.ok) {
-            const error = await res.text();
-            throw new Error(`Failed to create task: ${error}`);
+            throw new Error("Failed to create task");
         }
 
         return res.json();

@@ -6,15 +6,9 @@ export function renderTasks(tasks) {
         const tr = document.createElement("tr");
         tr.dataset.id = task.id;
 
-        tr.classList.add(`status-${task.status}`);
-
         tr.innerHTML = `
-            <td>
-                <input class="title-input" value="${task.title}">
-            </td>
-            <td>
-                <input class="description-input" value="${task.description ?? ""}">
-            </td>
+            <td><input class="title-input" value="${task.title}"></td>
+            <td><input class="description-input" value="${task.description ?? ""}"></td>
             <td>
                 <select class="status-select">
                     <option value="todo" ${task.status === "todo" ? "selected" : ""}>todo</option>
@@ -27,7 +21,6 @@ export function renderTasks(tasks) {
                 <button class="delete-btn">削除</button>
             </td>
         `;
-
         list.appendChild(tr);
     });
 }
