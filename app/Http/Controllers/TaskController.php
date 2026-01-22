@@ -3,42 +3,60 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Services\TaskService; // ← これが超重要
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    public function __construct(
+        TaskService $service
+    ) {
+        $this->service = $service;
+        $this->middleware('auth');
+    }
+
+    private TaskService $service;
+
     public function index()
     {
         return view('tasks.index');
     }
 
-    public function apiIndex()
-    {
-        return response()->json(Task::all());
-    }
-
     public function store(Request $request)
     {
-        $task = Task::create(
+        $task = $this->service->create(
             $request->validate([
                 'title' => 'required|string',
                 'description' => 'nullable|string',
-                'status' => 'required|in:todo,doing,done',
+                'status' => 'in:todo,doing,done',
             ])
         );
 
         return response()->json($task, 201);
     }
 
+    public function show(Task $task)
+    {
+        return response()->json($task);
+    }
+
     public function update(Request $request, Task $task)
     {
-        $task->update($request->all());
-        return response()->json($task);
+        return response()->json(
+            $this->service->update($task, $request->all())
+        );
     }
 
     public function destroy(Task $task)
     {
-        $task->delete();
+        $this->service->delete($task);
         return response()->json(null, 204);
+    }
+
+    public function apiIndex()
+    {
+        return response()->json(
+            Task::where('user_id', auth()->id())->get()
+        );
     }
 }
