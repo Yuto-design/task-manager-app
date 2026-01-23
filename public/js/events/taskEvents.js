@@ -1,6 +1,12 @@
 import { TaskApi } from "/js/api/taskApi.js";
 import { renderTasks } from "/js/ui/taskView.js";
 
+function clearTaskForm() {
+    document.getElementById("title").value = "";
+    document.getElementById("description").value = "";
+    document.getElementById("status").value = "todo";
+}
+
 export function initTaskEvents() {
     const addBtn = document.getElementById("add-btn");
     const taskList = document.getElementById("task-list");
@@ -19,6 +25,8 @@ export function initTaskEvents() {
 
         const tasks = await TaskApi.getAll();
         renderTasks(tasks);
+
+        clearTaskForm();
 
         console.log("タスクを追加しました");
         alert("追加しました");
