@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <h1>タスク管理</h1>
 
@@ -8,9 +9,9 @@
     <input id="description" placeholder="詳細">
 
     <select id="status">
-        <option value="todo">todo</option>
-        <option value="doing">doing</option>
-        <option value="done">done</option>
+        <option class="status-todo" value="todo">todo</option>
+        <option class="status-doing" value="doing">doing</option>
+        <option class="status-done" value="done">done</option>
     </select>
 
     <button id="add-btn">追加</button>
