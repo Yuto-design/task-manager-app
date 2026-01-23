@@ -2,11 +2,11 @@
 
 ## 概要
 
-本リポジトリは、Laravel を用いて作成したタスク管理 Web アプリケーションです。
+本リポジトリは、Laravel を用いて作成した**タスク管理 Web アプリケーション**です。
 Docker による開発環境の標準化と、GitHub Actions を用いた CI（継続的インテグレーション）を導入し、
 **技術更新や環境差異に強い Web アプリ基盤**の構築を目的としています。
 
-本アプリでは、タスクの追加・編集・削除・状態管理（todo / doing / done）を行うことができます。
+本アプリでは、タスクの**追加・編集・削除・状態管理（todo / doing / done）**を行うことができます。
 
 ---
 
@@ -65,7 +65,7 @@ Docker による開発環境の標準化と、GitHub Actions を用いた CI（�
 
 ## ディレクトリ構成（抜粋）
 
-```
+<pre><code>
 .
 ├── app/                # Laravel アプリケーション
 ├── database/
@@ -90,7 +90,7 @@ Docker による開発環境の標準化と、GitHub Actions を用いた CI（�
 ├── docker-compose.yml
 ├── .github/workflows/  # CI 設定
 └── README.md
-```
+</code></pre>
 
 ---
 
@@ -140,6 +140,18 @@ tasksテーブル
 |created_at|timestamp|作成日時|
 |updated_at|timestamp|更新日時|
 
+---
+
+## API概要
+|Method|Endpoint|説明|
+|----|----|----|
+|GET|`/api/tasks`|タスク一覧取得|
+|POST|`/api/tasks`|タスク追加|
+|PUT|`/api/tasks/{id}`|タスク更新|
+|DELETE|`/api/tasks/{id}`|タスク削除|
+
+---
+
 ## CI（GitHub Actions）について
 
 本リポジトリでは GitHub Actions を用いた CI を構築しています。
@@ -183,15 +195,6 @@ Test 実行
 > [!TIP]
 > CI では DB キャッシュ・セッションを無効化し、
 > テストの安定性と再現性を優先している。
-
----
-
-## `welcome.blade.php`について
-> [!NOTE]
-> Laravel 標準の welcome.blade.php は、
-> ルート / にアクセスした際の表示確認用ファイルである。
-> 本プロジェクトでは API 中心構成のため、
-> 内容は最小限または未使用としている。
 
 ---
 
