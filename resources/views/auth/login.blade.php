@@ -1,13 +1,13 @@
 <x-guest-layout>
-    <div class=" bg-gray-100 flex justify-center pt-24">
+    <div class="flex justify-center pt-24" style="background-color: #f0fdf4;">
         <div class="w-full max-w-md px-6">
 
             <!-- Title -->
             <h1 class="+ text-3xl font-semibold text-center text-gray-900 mt-3">
-                Task Manager
+                Task Manager App
             </h1>
             <p class="text-base text-center text-gray-600 mt-2 mb-10">
-                タスク管理アプリ
+                Login
             </p>
 
             <x-auth-session-status class="mt-6 text-sm" :status="session('status')" />
@@ -19,7 +19,7 @@
                 <div>
                     <x-input-label
                         for="email"
-                        value="メールアドレス"
+                        value="Email Address"
                         class="text-sm font-medium text-gray-700 mt-3"
                     />
 
@@ -46,7 +46,7 @@
                 <div>
                     <x-input-label
                         for="password"
-                        value="パスワード"
+                        value="Password"
                         class="text-sm font-medium text-gray-700 mt-3"
                     />
 
@@ -80,7 +80,7 @@
                                mt-3"
                     >
                     <label for="remember_me" class="ms-2 text-sm text-gray-700 mt-3">
-                        ログイン状態を保持
+                        Keep me logged in
                     </label>
                 </div>
 
@@ -97,14 +97,14 @@
                             focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
                         "
                         style="
-                            color: #4f46e5;
-                            background-color: white;
+                            color: #065f46;
+                            background-color: #ffffff;
                             border: 2px solid white;
                         "
-                        onmouseover="this.style.backgroundColor='#4f46e5'; this.style.color='white';"
-                        onmouseout="this.style.backgroundColor='white'; this.style.color='#4f46e5';"
+                        onmouseover="this.style.backgroundColor='#115e59'; this.style.color='#ffffff';"
+                        onmouseout="this.style.backgroundColor='#ffffff'; this.style.color='#115e59';"
                     >
-                        ログイン
+                        Login
                     </button>
                 </div>
 
@@ -116,9 +116,11 @@
                             class="text-sm font-medium
                                    text-indigo-600
                                    hover:text-indigo-700
+                                   underline
                                    mt-3"
+                            style="color: #065f46;"
                         >
-                            パスワードを忘れた方
+                            Forgot your password?
                         </a>
                     </div>
                 @endif
