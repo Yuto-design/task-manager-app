@@ -85,19 +85,24 @@
                 </div>
 
                 <!-- Button -->
-                <div class="pt-2">
+                <div class="pt-2 flex justify-center">
                     <button
                         type="submit"
-                        class="py-3
-                            text-base font-semibold text-indigo-700
-                            border-2 border-indigo-600
-                            rounded-md
-                            bg-white
-                            hover:bg-indigo-600 hover:text-white
-                            hover:border-indigo-700
+                        class="
+                            px-6 py-2
+                            text-sm font-semibold
+                            rounded
+                            transition-all duration-200
                             focus:outline-none
                             focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
-                            transition-colors"
+                        "
+                        style="
+                            color: #4f46e5;
+                            background-color: white;
+                            border: 2px solid white;
+                        "
+                        onmouseover="this.style.backgroundColor='#4f46e5'; this.style.color='white';"
+                        onmouseout="this.style.backgroundColor='white'; this.style.color='#4f46e5';"
                     >
                         ログイン
                     </button>
