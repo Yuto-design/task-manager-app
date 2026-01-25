@@ -113,25 +113,31 @@
 
                 <!-- Register and Forgot Password Links -->
                 <div class="text-center pt-2 space-y-2">
-                    <div href="{{ route('register') }}"
-                         class="text-sm font-medium
+                    <div>
+                        <a
+                            href="{{ route('register') }}"
+                            class="text-sm font-medium
                                 text-indigo-600
                                 hover:text-indigo-700
                                 underline"
-                         style="color: #065f46;"
-                    >
-                        Don't have an account? Sign up now.
+                            style="color: #065f46;"
+                        >
+                            Don't have an account? Sign up now.
+                        </a>
                     </div>
 
                     @if (Route::has('password.request'))
-                        <div href="{{ route('password.request') }}"
-                             class="text-sm font-medium
+                        <div>
+                            <a
+                                href="{{ route('password.request') }}"
+                                class="text-sm font-medium
                                     text-indigo-600
                                     hover:text-indigo-700
                                     underline"
-                             style="color: #065f46;"
-                        >
-                            Forgot your password?
+                                style="color: #065f46;"
+                            >
+                                Forgot your password?
+                            </a>
                         </div>
                     @endif
                 </div>
