@@ -34,9 +34,10 @@
                                focus:ring-indigo-500"
                         type="email"
                         name="email"
-                        :value="old('email')"
                         required
                         autofocus
+                        oninvalid="this.setCustomValidity('メールアドレスを入力してください')"
+                        oninput="this.setCustomValidity('')"
                     />
 
                     <x-input-error :messages="$errors->get('email')" class="mt-1 text-sm" />
@@ -62,6 +63,8 @@
                         type="password"
                         name="password"
                         required
+                        oninvalid="this.setCustomValidity('パスワードを入力してください')"
+                        oninput="this.setCustomValidity('')"
                     />
 
                     <x-input-error :messages="$errors->get('password')" class="mt-1 text-sm" />
@@ -108,22 +111,30 @@
                     </button>
                 </div>
 
-                <!-- Forgot -->
-                @if (Route::has('password.request'))
-                    <div class="text-center pt-2">
-                        <a
-                            href="{{ route('password.request') }}"
-                            class="text-sm font-medium
-                                   text-indigo-600
-                                   hover:text-indigo-700
-                                   underline
-                                   mt-3"
-                            style="color: #065f46;"
+                <!-- Register and Forgot Password Links -->
+                <div class="text-center pt-2 space-y-2">
+                    <div href="{{ route('register') }}"
+                         class="text-sm font-medium
+                                text-indigo-600
+                                hover:text-indigo-700
+                                underline"
+                         style="color: #065f46;"
+                    >
+                        Don't have an account? Sign up now.
+                    </div>
+
+                    @if (Route::has('password.request'))
+                        <div href="{{ route('password.request') }}"
+                             class="text-sm font-medium
+                                    text-indigo-600
+                                    hover:text-indigo-700
+                                    underline"
+                             style="color: #065f46;"
                         >
                             Forgot your password?
-                        </a>
-                    </div>
-                @endif
+                        </div>
+                    @endif
+                </div>
             </form>
         </div>
     </div>
