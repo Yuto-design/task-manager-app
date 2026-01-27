@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-    <h1>タスク管理</h1>
+    <h1 id="page-title">タスク管理</h1>
 
     <input id="title" placeholder="タスク名">
     <input id="description" placeholder="詳細">
