@@ -120,7 +120,7 @@ docker compose exec app php artisan migrate
 
 ### アクセス方法
 
-* Web アプリ: [http://localhost:8080](http://localhost:8080)
+* Web アプリ: [http://localhost:8080/login](http://localhost:8080/login)
 * phpMyAdmin: [http://localhost:8081](http://localhost:8081)
 
   * サーバー: db
@@ -210,7 +210,18 @@ Test 実行
 
 これにより、将来的な `PHP` / `Laravel` / `MySQL` のバージョン更新にも対応しやすい基盤を実現しています。
 
+評価用の構成スナップショット（従来構成の説明）は [docs/legacy-architecture.md](docs/legacy-architecture.md) を参照してください。
+
 ---
+
+## テスト・静的解析
+
+* **PHPUnit**: `composer test`（`php artisan test`）で Feature/Unit テストを実行。タスク API は `tests/Feature/TaskApiTest.php` で検証。
+* **PHPStan**: `composer phpstan` で PHP の静的解析を実行（`app/` を対象、レベル 5）。初回または `composer.json` 変更後は `composer update` で `composer.lock` を更新すること。
+* **ESLint**: `npm run lint` で `public/js` の JavaScript をチェック。
+* **Jest**: `npm test` でフロントエンドのユニットテストを実行（`public/js/__tests__/`）。
+
+CI（GitHub Actions）では上記に加え、PHPStan・ESLint・Jest を自動実行します。
 
 ## 今後の課題（発展）
 

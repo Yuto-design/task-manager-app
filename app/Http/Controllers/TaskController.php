@@ -2,36 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private TaskService $taskService
+    ) {
         $this->middleware('auth');
     }
 
     public function index()
     {
-        $tasks = Task::where('user_id', Auth::id())->get();
         return view('tasks.index');
     }
 
     public function list()
     {
-        return response()->json(
-            Auth::user()->tasks()->latest()->get()
-        );
+        $tasks = $this->taskService->getTasksForUser(Auth::user());
+
+        return response()->json($tasks->sortByDesc('id')->values());
     }
 
     public function apiIndex()
     {
-        return response()->json(
-            Auth::user()->tasks()->orderBy('id', 'desc')->get()
-        );
+        $tasks = $this->taskService->getTasksForUser(Auth::user());
+
+        return response()->json($tasks->all());
     }
 
     public function store(Request $request)
@@ -42,27 +41,23 @@ class TaskController extends Controller
             'status' => 'required|in:todo,doing,done',
         ]);
 
-        $task = Auth::user()->tasks()->create($data);
+        $task = $this->taskService->createTask(Auth::user(), $data);
 
         return response()->json($task, 201);
     }
 
-    public function update(Request $request, Task $task)
+    public function update(Request $request, int $id)
     {
-        abort_if($task->user_id !== Auth::id(), 403);
+        $data = $request->only('title', 'description', 'status');
+        $updated = $this->taskService->updateTask(Auth::user(), $id, $data);
 
-        $task->update($request->only('title', 'description', 'status'));
-
-        return response()->json($task);
+        return response()->json($updated);
     }
 
-    public function destroy(Task $task)
+    public function destroy(int $id)
     {
-        abort_if($task->user_id !== Auth::id(), 403);
-
-        $task->delete();
+        $this->taskService->deleteTask(Auth::user(), $id);
 
         return response()->json(null, 204);
     }
 }
-
