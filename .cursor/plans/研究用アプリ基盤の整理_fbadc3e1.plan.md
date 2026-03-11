@@ -93,3 +93,33 @@ PHPStan、Jest、ESLint を導入し、CI に組み込む。
 例: まず A → B で「従来」と「提案」の両方の状態を用意し、そのあと C で評価環境を整える。
 
 「まずは A だけ」「B と C を一緒に進めたい」など、希望の優先順位があれば教えてください。それに合わせて、具体的な作業手順（どのファイルをどう変更するか）まで落とした実行プランを作成します。
+
+---
+
+## 正解の基準：全10テストが緑（PASS）になること
+
+php artisan test --testsuite=Feature --filter=TaskApiTest を実行して、10件すべてが成功
+
+### 各テストで「正解」とみなされる内容
+|#|テスト名|正解になる条件|
+|-|-------|-----------|
+|1|test_guest_cannot_access_task_api|未ログインで GET /api/tasks を叩くと 401 が返る|
+|2|test_authenticated_user_can_list_own_tasks|ログインユーザーが GET /api/tasks を叩くと 200、JSON が 1件 で、id / title / status が期待おり|
+|3|test_authenticated_user_does_not_see_other_users_tasks|他人のタスクは含まれず、200 で JSON が 0件|
+|4|test_authenticated_user_can_create_task|POST /api/tasks で 201、レスポンスに title / description / status / user_id が期待どおりで、DB にそのタスクが 1件保存されている|
+|5|test_create_task_requires_title_and_status|title なし or status なしで作成すると 422（バリデーションエラー）|
+|6|test_create_task_accepts_only_valid_status|status が invalid のとき 422（todo / doing / done 以外は拒否）|
+|7|test_authenticated_user_can_update_own_task|自分のタスクを PUT /api/tasks/{id} で更新すると 200、レスポンスとDBの title / status が更新後の値になっている|
+|8|test_authenticated_user_cannot_update_other_users_task|他人のタスクを更新しようとすると 403、DB の title は 変更されていない|
+|9|test_authenticated_user_can_delete_own_task|自分のタスクを DELETE /api/tasks/{id} で削除すると 204、そのタスクが DB から消えている|
+|10|test_authenticated_user_cannot_delete_other_users_task|他人のタスクを削除しようとすると 403、そのタスクは DB に残っている|
+
+### 実行方法と結果の見方
+* ローカル（Docker + MySQL 前提）
+* docker compose up -d のあと、
+* php artisan test --testsuite=Feature --filter=TaskApiTestで「10 passed」なら正解
+
+* CI（GitHub Actions）
+  * push 後に laravel-tests ジョブの「Run tests」で同じテストが走り、ここも全て成功すれば正解
+
+まとめると、「正解」= 上記10テストがすべて PASS することです。1つでも FAIL やエラーになれば、その時点で不正解として修正が必要です。
