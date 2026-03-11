@@ -2,11 +2,12 @@
 
 namespace App\Http\Responses;
 
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
-class LoginResponse implements LoginResponseContract
+class LoginResponse
 {
-    public function toResponse($request)
+    public function toResponse(Request $request): RedirectResponse
     {
         return redirect('/tasks');
     }
