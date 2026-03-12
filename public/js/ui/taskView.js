@@ -48,16 +48,3 @@ function updateStatusColor() {
 updateStatusColor();
 
 statusSelect.addEventListener('change', updateStatusColor);
-
-document.getElementById("task-list").addEventListener("click", (e) => {
-    if (e.target.classList.contains("save-btn")) {
-        const tr = e.target.closest("tr");
-        const _id = tr.dataset.id;
-        const _title = tr.querySelector(".title-input").value;
-        const _description = tr.querySelector(".description-input").value;
-        const status = tr.querySelector(".status-select").value;
-
-        tr.classList.remove("task-todo", "task-doing", "task-done");
-        tr.classList.add(`task-${status}`);
-    }
-});

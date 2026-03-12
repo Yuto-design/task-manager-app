@@ -29,16 +29,19 @@ class TaskService
 
     public function updateTask(User $user, int $taskId, array $data): Task
     {
-        $task = $this->taskRepository->findForUser((int) $user->id, $taskId);
-
-        if ($task === null) {
-            abort(403);
-        }
+        $task = $this->findTaskOrAbort($user, $taskId);
 
         return $this->taskRepository->update($task, $data);
     }
 
     public function deleteTask(User $user, int $taskId): void
+    {
+        $task = $this->findTaskOrAbort($user, $taskId);
+
+        $this->taskRepository->delete($task);
+    }
+
+    private function findTaskOrAbort(User $user, int $taskId): Task
     {
         $task = $this->taskRepository->findForUser((int) $user->id, $taskId);
 
@@ -46,6 +49,6 @@ class TaskService
             abort(403);
         }
 
-        $this->taskRepository->delete($task);
+        return $task;
     }
 }

@@ -4,23 +4,26 @@ const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     ?.getAttribute("content");
 
+const defaultOptions = {
+    headers: { "Accept": "application/json" },
+    credentials: "same-origin",
+};
+
+const jsonHeaders = {
+    ...defaultOptions.headers,
+    "Content-Type": "application/json",
+    "X-CSRF-TOKEN": csrfToken,
+};
+
 export class TaskApi {
 
     static async getAll() {
-        const res = await fetch("/tasks/list", {
-            headers: { "Accept": "application/json" },
-            credentials: "same-origin",
-        });
+        const res = await fetch("/tasks/list", defaultOptions);
         return res.json();
     }
 
     static async get(id) {
-        const res = await fetch(`${BASE_URL}/${id}`, {
-            headers: {
-                "Accept": "application/json",
-            },
-            credentials: "same-origin",
-        });
+        const res = await fetch(`${BASE_URL}/${id}`, defaultOptions);
 
         if (!res.ok) {
             throw new Error(`Failed to fetch task: ${id}`);
@@ -31,15 +34,9 @@ export class TaskApi {
 
     static async create(data) {
         const res = await fetch(BASE_URL, {
+            ...defaultOptions,
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document
-                    .querySelector('meta[name="csrf-token"]')
-                    .getAttribute("content"),
-                "Accept": "application/json",
-            },
-            credentials: "same-origin",
+            headers: jsonHeaders,
             body: JSON.stringify(data),
         });
 
@@ -52,13 +49,9 @@ export class TaskApi {
 
     static async update(id, data) {
         const res = await fetch(`${BASE_URL}/${id}`, {
+            ...defaultOptions,
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": csrfToken,
-                "Accept": "application/json",
-            },
-            credentials: "same-origin",
+            headers: jsonHeaders,
             body: JSON.stringify(data),
         });
 
@@ -72,12 +65,9 @@ export class TaskApi {
 
     static async delete(id) {
         const res = await fetch(`${BASE_URL}/${id}`, {
+            ...defaultOptions,
             method: "DELETE",
-            headers: {
-                "X-CSRF-TOKEN": csrfToken,
-                "Accept": "application/json",
-            },
-            credentials: "same-origin",
+            headers: { ...defaultOptions.headers, "X-CSRF-TOKEN": csrfToken },
         });
 
         if (!res.ok) {

@@ -28,7 +28,6 @@ export function initTaskEvents() {
 
         clearTaskForm();
 
-        console.log("タスクを追加しました");
         alert("追加しました");
     });
 
@@ -49,7 +48,8 @@ export function initTaskEvents() {
                 status
             });
 
-            console.log(`タスク ${id} を保存しました`);
+            row.classList.remove("task-todo", "task-doing", "task-done");
+            row.classList.add(`task-${status}`);
             alert("保存しました");
         }
 
@@ -59,7 +59,6 @@ export function initTaskEvents() {
             await TaskApi.delete(id);
             row.remove();
 
-            console.log(`タスク ${id} を削除しました`);
             alert("削除しました");
         }
     });

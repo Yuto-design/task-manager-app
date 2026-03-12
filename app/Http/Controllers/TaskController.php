@@ -19,13 +19,6 @@ class TaskController extends Controller
         return view('tasks.index');
     }
 
-    public function list()
-    {
-        $tasks = $this->taskService->getTasksForUser(Auth::user());
-
-        return response()->json($tasks->sortByDesc('id')->values());
-    }
-
     public function apiIndex()
     {
         $tasks = $this->taskService->getTasksForUser(Auth::user());
